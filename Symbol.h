@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-enum SYMBOLS {
+enum class symbolsEnum {
 	SEVEN,
 	BAR,
 	WATERMELON,
@@ -10,36 +10,50 @@ enum SYMBOLS {
 	PEACH,
 	ORANGE,
 	CHERRY,
-	LEMON
+	LEMON,
+	SYMBOLSCOUNT,
+	EMPTY
 };
 
 class Symbol
 {
-	int const ID;
-	std::string const SIGN;
+	symbolsEnum id;
+	std::string sign;
 
 public:
+	Symbol()
+		: id(symbolsEnum::EMPTY), sign("")
+	{}
 
-	Symbol(int _ID, std::string _SIGN)
-		: ID(_ID), SIGN(_SIGN)
-	{
-
-	}
+	Symbol(symbolsEnum const& _id, std::string const& _sign)
+		: id(_id), sign(_sign)
+	{}
 
 	Symbol(const Symbol& other)
-		: Symbol(other.ID, other.SIGN)
+		: Symbol(other.id, other.sign)
+	{}
+
+	Symbol& operator=(const Symbol& other)
 	{
+		return *this = Symbol(other);
 	}
 
 	Symbol(Symbol&& other) noexcept
-	//	: ID(std::exchange(other.ID, 0)),
-	:	  ID(other.ID), SIGN(std::move(other.SIGN))
+		: id(std::move(other.id)),
+		  sign(std::move(other.sign))
+	{}
+
+	~Symbol()
+	{}
+
+	std::string getSymbol()
 	{
+		return this->sign;
 	}
 
-	void printSymbol()
+	symbolsEnum getid()
 	{
-		std::cout << this->SIGN;
+		return this->id;
 	}
 
 };
