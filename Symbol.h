@@ -41,5 +41,6 @@ public:
 	{
 		std::cout << this->SIGN;
 	}
+
 };
 
