@@ -30,9 +30,11 @@ public:
 
 	Symbol(const Symbol& other)
 		: Symbol(other.id, other.sign)
-	{}
+	{
+		std::cout << " kopiujacy z other \n";
+	}
 
-	Symbol& operator=(const Symbol&& other) noexcept
+	Symbol& operator=(const Symbol& other) 
 	{	
 		std::cout << " K prze ";
 		if (this != &other)
