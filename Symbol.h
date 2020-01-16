@@ -1,6 +1,5 @@
 ﻿#pragma once
-#include <iostream>
-#include <string>
+#include "Util.h"
 
 enum class symbolsEnum {
 	SEVEN,
@@ -22,7 +21,7 @@ class Symbol
 
 public:
 	Symbol()
-		: id(symbolsEnum::EMPTY), sign("")
+		: id(symbolsEnum::EMPTY), sign(" ")
 	{}
 
 	Symbol(symbolsEnum const& _id, std::string const& _sign)
@@ -33,9 +32,16 @@ public:
 		: Symbol(other.id, other.sign)
 	{}
 
-	Symbol& operator=(const Symbol& other)
-	{
-		return *this = Symbol(other);
+	Symbol& operator=(const Symbol&& other) noexcept
+	{	
+		std::cout << " K prze ";
+		if (this != &other)
+		{
+			std::cout << "pisujacy\n";
+			return *this = Symbol(other);
+
+		}
+
 	}
 
 	Symbol(Symbol&& other) noexcept
@@ -46,6 +52,11 @@ public:
 	~Symbol()
 	{}
 
+	friend std::ostream& operator<<(std::ostream & out, const Symbol& s)
+	{
+		out << s.sign;
+		return out;
+	}
 	std::string getSymbol()
 	{
 		return this->sign;

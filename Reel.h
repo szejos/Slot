@@ -1,6 +1,5 @@
 #pragma once
-#include <iostream>
-#include <vector>
+#include "Util.h"
 #include "Symbol.h"
 
 class Reel
@@ -34,5 +33,9 @@ public:
 
 	~Reel()
 	{}
+
+	void shuffleSymbols();
+	void insertSymbol(Symbol symbol, int numberTimes);
+	void printReel();
 };
 
