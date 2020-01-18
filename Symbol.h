@@ -31,19 +31,16 @@ public:
 	Symbol(const Symbol& other)
 		: Symbol(other.id, other.sign)
 	{
-		std::cout << " kopiujacy z other \n";
 	}
 
 	Symbol& operator=(const Symbol& other) 
 	{	
-		std::cout << " K prze ";
 		if (this != &other)
 		{
-			std::cout << "pisujacy\n";
-			return *this = Symbol(other);
-
+			id = other.id;
+			sign = other.sign;
+			return *this;// = Symbol(other);
 		}
-
 	}
 
 	Symbol(Symbol&& other) noexcept
@@ -58,6 +55,46 @@ public:
 	{
 		out << s.sign;
 		return out;
+	}
+	bool operator==(const Symbol& other) const
+	{ 
+		if (this->id == other.id)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool operator>(const Symbol& other) const
+	{
+		if (this->id > other.id)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool operator<(const Symbol& other) const
+	{
+		if (this->id < other.id)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool operator>=(const Symbol& other) const
+	{
+		if (this->id >= other.id)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool operator<=(const Symbol& other) const
+	{
+		if (this->id <= other.id)
+		{
+			return true;
+		}
+		return false;
 	}
 	std::string getSymbol()
 	{

@@ -1,11 +1,12 @@
 #include "Game.h"
 #include "Util.h"
+
+
 bool Game::gameInit()
 {
-
 	// set some initial values
 	// how many of each symbol is on the reel
-	symbolsOnReels = {
+	this->symbolsOnReels = {
 		std::map<symbolsEnum, int>{ {symbolsEnum::SEVEN, 1},
 									{symbolsEnum::BAR, 3},
 									{symbolsEnum::WATERMELON, 2},
@@ -33,7 +34,6 @@ bool Game::gameInit()
 									{symbolsEnum::CHERRY, 0},
 									{symbolsEnum::LEMON, 4},
 								  }
-
 	};
 
 	// create symbols
@@ -47,31 +47,69 @@ bool Game::gameInit()
 	{ symbolsEnum::CHERRY,	   Symbol(symbolsEnum::CHERRY, "CHE") },
 	{ symbolsEnum::LEMON,	   Symbol(symbolsEnum::LEMON, "LEM") },
 	};
-	std::cout << " Tworzenie reelsow \n";
-	//create reels
+
+	//create reels and shuffle symbols
 	for_each(this->symbolsOnReels.begin(), this->symbolsOnReels.end(), [&](std::map<symbolsEnum, int> reelMap)
 	{
 			int elementsOnReel = std::accumulate(reelMap.begin(), reelMap.end(), 0,
 				[](int sumOfSymbols, std::pair<symbolsEnum, int> p) { return (sumOfSymbols + p.second); });
 
-			std::unique_ptr<Reel> reel = std::make_unique<Reel>(elementsOnReel);
-			std::cout << " Reel X: \n";
+			std::unique_ptr<Reel> reel = std::make_unique<Reel>();
 			for_each(reelMap.begin(), reelMap.end(), [&](std::pair<symbolsEnum, int> tempSymbolPair)
 			{
 					Symbol symbol(symbolsAvail[tempSymbolPair.first]);
-					reel->insertSymbol(symbol, tempSymbolPair.second);
-					std::cout << " Symbol: " << symbol << " \n";
+					reel->insertSymbol(std::move(symbol), tempSymbolPair.second);
 			});
 
 			reel->shuffleSymbols();
 			this->reels.push_back(std::move(reel));
 	});
-	std::cout << " Po reelsow \n";
-	reels.at(0)->printReel();
 
-	std::map <std::vector<Symbol>, int> payLines;
+
+	reels.at(0)->printReel();
+	reels.at(1)->printReel();
+	reels.at(2)->printReel();
+
+	// symbols combination as key in map / credits paid
+	this->winLines = 
+	{
+		{std::vector<Symbol>(3, symbolsAvail[symbolsEnum::SEVEN]), 
+							 200},
+		{std::vector<Symbol>(3, symbolsAvail[symbolsEnum::BAR]),
+							 100},
+		{std::vector<Symbol>(3, symbolsAvail[symbolsEnum::WATERMELON]),
+							 100},
+		{std::vector<Symbol>(3, symbolsAvail[symbolsEnum::BELL]),
+							 18},
+		{std::vector<Symbol>(3, symbolsAvail[symbolsEnum::PEACH]),
+							 14},
+		{std::vector<Symbol>(3, symbolsAvail[symbolsEnum::ORANGE]),
+							 10},
+		{std::vector<Symbol>(2, symbolsAvail[symbolsEnum::CHERRY]),
+							 5},
+		{std::vector<Symbol>(1, symbolsAvail[symbolsEnum::CHERRY]),
+							 2},
+		{std::vector<Symbol>{symbolsAvail[symbolsEnum::WATERMELON], symbolsAvail[symbolsEnum::WATERMELON], 
+							 symbolsAvail[symbolsEnum::BAR]},
+							 100},
+		{std::vector<Symbol>{symbolsAvail[symbolsEnum::BELL], symbolsAvail[symbolsEnum::BELL], 
+							 symbolsAvail[symbolsEnum::BAR]},
+							 18},
+		{std::vector<Symbol>{symbolsAvail[symbolsEnum::PEACH], symbolsAvail[symbolsEnum::PEACH], 
+							 symbolsAvail[symbolsEnum::BAR]},
+							 14},
+		{std::vector<Symbol>{symbolsAvail[symbolsEnum::ORANGE], symbolsAvail[symbolsEnum::ORANGE],
+							 symbolsAvail[symbolsEnum::BAR]},
+							 10}
+	};
 
 
 	return true;
+}
+
+void Game::playTheGame()
+{
+
+
 
 }

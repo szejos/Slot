@@ -5,7 +5,7 @@
 class Reel
 {
 	int numberOfSymbols;
-	std::vector<Symbol> symbolsInReel;
+	std::vector<Symbol> symbolsInReel; 
 
 public:
 	Reel() : numberOfSymbols(0)
@@ -36,6 +36,8 @@ public:
 
 	void shuffleSymbols();
 	void insertSymbol(Symbol symbol, int numberTimes);
+	Symbol getSymbol(int symbolPosition);
+	std::array<Symbol, 6> randomSymbol();
 	void printReel();
 };
 

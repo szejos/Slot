@@ -2,11 +2,11 @@
 
 int main()
 {
-	Symbol d(symbolsEnum::BAR, "BAR");
-	Symbol b = d;
+	std::srand(std::time(0));
 
-	Game g(3, 1);
-	std::cout << " Poczatek: \n";
-	//g.gameInit();
+	Game Slot(3, 1);
+
+	Slot.gameInit();
+	Slot.playTheGame();
 
 }
