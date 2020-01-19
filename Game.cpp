@@ -65,11 +65,6 @@ bool Game::gameInit()
 			this->reels.push_back(std::move(reel));
 	});
 
-
-	//reels.at(0)->printReel();
-	//reels.at(1)->printReel();
-	//reels.at(2)->printReel();
-
 	// symbols combination as key in map / credits paid
 	this->winLines = 
 	{
@@ -103,80 +98,87 @@ bool Game::gameInit()
 							 10}
 	};
 
-	//std::vector<Symbol> d(3, symbolsAvail[symbolsEnum::SEVEN]);
-
-	
-	//std::cout << " kredyty: " << winLines.find(d)->second;
 	return true;
 }
-void Game::setConsole(int x, int y, int color)
+void Game::displayLine(int x, int y, std::vector<Symbol> vec, int color)
 {
-	COORD xy = { x, y };
+	int stepX = 10;
+	int stepY = 6;
+
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), xy);
+
+	for (int i = 0; i <= vec.size() - 3; ++i)
+	{
+		for (int k = 0; k < 3; ++k)
+		{
+			COORD startXY = { x, y + k*stepY };
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), startXY);
+			std::cout << vec.at(i+k);
+		}
+		Sleep(300);
+	}
 }
 
 void Game::playTheGame()
 {
 
-	int choicePick;
+	char charPick = 1;
 	bool mainLoop = true;
-	int k = 1000000;
-	int count = 0;
-	//while (mainLoop)
+	while (mainLoop)
 	{	
 		std::vector<std::vector<Symbol>> results;
 		for(auto&& reel: this->reels)
 		{
-				results.push_back(reel->randomSymbol());
+			results.push_back(reel->randomSymbol());
 		}
 
-
-		std::vector<Symbol> line{ results.at(0).at(1), 
-								  results.at(1).at(1), 
-								  results.at(2).at(1)};
-
-
+		std::vector<Symbol> line{ results.at(0).at(4), 
+								  results.at(1).at(4), 
+								  results.at(2).at(4)};
 
 		auto win = winLines.find(line);
 
-		//con << std::string(" Wylosowana linia: ");// << line.at(0) << "-" << line.at(1) << "-" << line.at(2) << " \n";
-		if (win != winLines.end())
-		{
-			//std::cout << " Wylosowana linia: " << line.at(0) << "-" << line.at(1) << "-" << line.at(2) << " \n";
-			//std::cout << " Wygrana: linia / kredyty " <<  win->second << " \n";
-
-		}
 		system("cls");
 		this->displaySlot();
-		Game::setConsole(23, 11, 10);
-		std::cout << "777";
-		Game::setConsole(33, 11, 10);
-		std::cout << "777";
-		Game::setConsole(43, 11, 10);
-		std::cout << "777";
-		Game::setConsole(23, 17, 10);
-		std::cout << "777";
-		Game::setConsole(33, 17, 10);
-		std::cout << "777";
-		Game::setConsole(43, 17, 10);
-		std::cout << "777";
-		Game::setConsole(23, 23, 10);
-		std::cout << "777";
-		Game::setConsole(33, 23, 10);
-		std::cout << "777";
-		Game::setConsole(43, 23, 10);
-		std::cout << "777";
-		getchar();
+
+		int i = 0;
+		for (auto vec : results)
+		{
+			this->displayLine(23 + (i++ * 10), 11, vec, 10);
+		}
+
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
+		COORD startXY = { 25, 29 };
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), startXY);
+		if (win != winLines.end())
+		{
+			std::cout << " Won " << win->second * charPick - '1' << " credit \n";
+			this->credits += win->second * charPick - '0';
+		}
+		else
+		{
+			std::cout << " --------------- \n";
+		}
+
+		startXY = { 0, 40 };
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), startXY);
+		do
+		{
+			charPick = _getch();
+		} while (charPick != 'e' && charPick != '1' && charPick != '2' && charPick != '3');
+
+		this->credits -= charPick - '0';
+		if (charPick == 'e')
+		{
+			mainLoop = false;
+		}
 	}
-	//std::cout << "Wygranych: " << count;
-	//std::cout << "Choose ";
-	//std::cin >> choicePick;
 
 }
 
 void Game::displaySlot()
 {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	std::cout << "                              .-------.\n";
 	std::cout << "                              |Jackpot|\n";
 	std::cout << "                  ____________|_______|____________\n";
@@ -194,7 +196,7 @@ void Game::displaySlot()
 	std::cout << "                 |===_______===_______===_______===| ||\n";
 	std::cout << "                 ||*|       |*|       |*|       |*|| ||\n";
 	std::cout << "                 ||*|       |*|       |*|       |*|| ||\n";
-	std::cout << "                 ||*|       |*|       |*|       |*|| ||\n";
+	std::cout << "       payline - ||*|       |-|       |-|       |*|| ||\n";
 	std::cout << "                 ||*|       |*|       |*|       |*|| ||\n";
 	std::cout << "                 ||*|_______|*|_______|*|_______|*||_//\n";
 	std::cout << "                 |===_______===_______===_______===|_/\n";
@@ -206,6 +208,12 @@ void Game::displaySlot()
 	std::cout << "                 |lc=___________________________===|\n";
 	std::cout << "                 |  /___________________________\\  |\n";
 	std::cout << "                 |   |                         |   |\n";
+	std::cout << "                 |   |                         |   |\n";
 	std::cout << "                _|    \\_______________________/    |_\n";
 	std::cout << "               (_____________________________________)\n";
+
+	std::cout << "\n                Credits: " << this->credits << " \n";
+	std::cout << "                Press: 1 - play 1xcredit\n";
+	std::cout << "                       2 - play 2xcredit\n";
+	std::cout << "                       3 - play 3xcredit\n";
 }

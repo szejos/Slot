@@ -5,6 +5,7 @@ class Game
 {
 	int const numberOfReels;
 	int const numberOfPayLines;
+	int credits = 500;
 	std::map<std::vector<Symbol>, int> winLines;
 	std::vector<std::unique_ptr<Reel>> reels;
 	std::vector<std::map<symbolsEnum, int>> symbolsOnReels;
@@ -19,7 +20,7 @@ public:
 
 	bool gameInit();
 	void playTheGame();
-	static void setConsole(int x, int y, int color = 0);
+	static void displayLine(int x, int y, std::vector<Symbol> vec, int color = 0);
 	void displaySlot();
 };
 
