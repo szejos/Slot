@@ -66,9 +66,9 @@ bool Game::gameInit()
 	});
 
 
-	reels.at(0)->printReel();
-	reels.at(1)->printReel();
-	reels.at(2)->printReel();
+	//reels.at(0)->printReel();
+	//reels.at(1)->printReel();
+	//reels.at(2)->printReel();
 
 	// symbols combination as key in map / credits paid
 	this->winLines = 
@@ -109,6 +109,13 @@ bool Game::gameInit()
 	//std::cout << " kredyty: " << winLines.find(d)->second;
 	return true;
 }
+void Game::setConsole(int x, int y, int color)
+{
+	COORD xy = { x, y };
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), xy);
+}
+
 void Game::playTheGame()
 {
 
@@ -117,14 +124,14 @@ void Game::playTheGame()
 	int k = 1000000;
 	int count = 0;
 	//while (mainLoop)
-	{
+	{	
 		std::vector<std::vector<Symbol>> results;
 		for(auto&& reel: this->reels)
 		{
 				results.push_back(reel->randomSymbol());
 		}
 
-		//system("cls");
+
 		std::vector<Symbol> line{ results.at(0).at(1), 
 								  results.at(1).at(1), 
 								  results.at(2).at(1)};
@@ -140,12 +147,65 @@ void Game::playTheGame()
 			//std::cout << " Wygrana: linia / kredyty " <<  win->second << " \n";
 
 		}
-
-
-
+		system("cls");
+		this->displaySlot();
+		Game::setConsole(23, 11, 10);
+		std::cout << "777";
+		Game::setConsole(33, 11, 10);
+		std::cout << "777";
+		Game::setConsole(43, 11, 10);
+		std::cout << "777";
+		Game::setConsole(23, 17, 10);
+		std::cout << "777";
+		Game::setConsole(33, 17, 10);
+		std::cout << "777";
+		Game::setConsole(43, 17, 10);
+		std::cout << "777";
+		Game::setConsole(23, 23, 10);
+		std::cout << "777";
+		Game::setConsole(33, 23, 10);
+		std::cout << "777";
+		Game::setConsole(43, 23, 10);
+		std::cout << "777";
+		getchar();
 	}
 	//std::cout << "Wygranych: " << count;
 	//std::cout << "Choose ";
 	//std::cin >> choicePick;
 
+}
+
+void Game::displaySlot()
+{
+	std::cout << "                              .-------.\n";
+	std::cout << "                              |Jackpot|\n";
+	std::cout << "                  ____________|_______|____________\n";
+	std::cout << "                 |  __    __    ___  _____   __    |  \n";
+	std::cout << "                 | / _\\  / /   /___\\/__   \\ / _\\   | \n";
+	std::cout << "                 | \\ \\  / /   //  //  / /\\ \\\\ \\  25|  \n";
+	std::cout << "                 | _\\ \\/ /___/ \\_//  / /  \\/_\\ \\ []| \n";
+	std::cout << "                 | \\__/\\____/\\___/   \\/     \\__/ []|\n";
+	std::cout << "                 |===_______===_______===_______===|\n";
+	std::cout << "                 ||*|       |*|       |*|       |*||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*|| __\n";
+	std::cout << "                 ||*|_______|*|_______|*|_______|*||(__)\n";
+	std::cout << "                 |===_______===_______===_______===| ||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*|| ||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*|| ||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*|| ||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*|| ||\n";
+	std::cout << "                 ||*|_______|*|_______|*|_______|*||_//\n";
+	std::cout << "                 |===_______===_______===_______===|_/\n";
+	std::cout << "                 ||*|       |*|       |*|       |*||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*||\n";
+	std::cout << "                 ||*|       |*|       |*|       |*||\n";
+	std::cout << "                 ||*|_______|*|_______|*|_______|*||\n";
+	std::cout << "                 |lc=___________________________===|\n";
+	std::cout << "                 |  /___________________________\\  |\n";
+	std::cout << "                 |   |                         |   |\n";
+	std::cout << "                _|    \\_______________________/    |_\n";
+	std::cout << "               (_____________________________________)\n";
 }

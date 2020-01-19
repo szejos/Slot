@@ -19,5 +19,7 @@ public:
 
 	bool gameInit();
 	void playTheGame();
+	static void setConsole(int x, int y, int color = 0);
+	void displaySlot();
 };
 
