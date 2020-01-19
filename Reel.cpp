@@ -16,11 +16,21 @@ Symbol Reel::getSymbol(int symbolPosition)
 	return this->symbolsInReel.at(symbolPosition);
 }
 
-std::array<Symbol, 6> Reel::randomSymbol()
+std::vector<Symbol> Reel::randomSymbol()
 {
 	int rand = std::rand() % this->symbolsInReel.size() + 1;
-	int wrapper = (rand == 0) ? this->symbolsInReel.size() - 1 : rand;
-	return array<Symbol, 6>(this->symbolsInReel.begin() + rand )
+	std::vector<Symbol> ret;
+	int i = 0;
+	for(auto it = this->symbolsInReel.begin() + rand; i < 6; ++it)
+	{
+		//wraping
+		if (it == this->symbolsInReel.end())
+			it = this->symbolsInReel.begin();
+
+		ret.push_back(*it);
+		++i;
+	}
+	return ret;
 }
 
 void Reel::printReel()

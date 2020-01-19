@@ -103,13 +103,49 @@ bool Game::gameInit()
 							 10}
 	};
 
+	//std::vector<Symbol> d(3, symbolsAvail[symbolsEnum::SEVEN]);
 
+	
+	//std::cout << " kredyty: " << winLines.find(d)->second;
 	return true;
 }
-
 void Game::playTheGame()
 {
 
+	int choicePick;
+	bool mainLoop = true;
+	int k = 1000000;
+	int count = 0;
+	//while (mainLoop)
+	{
+		std::vector<std::vector<Symbol>> results;
+		for(auto&& reel: this->reels)
+		{
+				results.push_back(reel->randomSymbol());
+		}
 
+		//system("cls");
+		std::vector<Symbol> line{ results.at(0).at(1), 
+								  results.at(1).at(1), 
+								  results.at(2).at(1)};
+
+
+
+		auto win = winLines.find(line);
+
+		//con << std::string(" Wylosowana linia: ");// << line.at(0) << "-" << line.at(1) << "-" << line.at(2) << " \n";
+		if (win != winLines.end())
+		{
+			//std::cout << " Wylosowana linia: " << line.at(0) << "-" << line.at(1) << "-" << line.at(2) << " \n";
+			//std::cout << " Wygrana: linia / kredyty " <<  win->second << " \n";
+
+		}
+
+
+
+	}
+	//std::cout << "Wygranych: " << count;
+	//std::cout << "Choose ";
+	//std::cin >> choicePick;
 
 }

@@ -37,7 +37,7 @@ public:
 	void shuffleSymbols();
 	void insertSymbol(Symbol symbol, int numberTimes);
 	Symbol getSymbol(int symbolPosition);
-	std::array<Symbol, 6> randomSymbol();
+	std::vector<Symbol> randomSymbol();
 	void printReel();
 };
 

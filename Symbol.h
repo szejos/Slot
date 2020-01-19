@@ -51,7 +51,7 @@ public:
 	~Symbol()
 	{}
 
-	friend std::ostream& operator<<(std::ostream & out, const Symbol& s)
+	friend std::ostream& operator<<(std::ostream& out, const Symbol& s)
 	{
 		out << s.sign;
 		return out;
