@@ -20,7 +20,7 @@ public:
 
 	bool gameInit();
 	void playTheGame();
-	static void displayLine(int x, int y, std::vector<Symbol> vec, int color = 0);
+	static void displayLine(short int x, short int y, std::vector<Symbol> vec, int color = 0);
 	void displaySlot();
 };
 

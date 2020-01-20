@@ -2,16 +2,16 @@
 #include "Util.h"
 
 enum class symbolsEnum {
-	SEVEN,
-	BAR,
-	WATERMELON,
-	BELL,
-	PEACH,
-	ORANGE,
-	CHERRY,
-	LEMON,
-	SYMBOLSCOUNT,
-	EMPTY
+	SEVEN = 169,
+	BAR = 30,
+	WATERMELON = 42,
+	BELL = 97,
+	PEACH = 91,
+	ORANGE = 236,
+	CHERRY = 202,
+	LEMON = 250,
+	SYMBOLSCOUNT = 8,
+	EMPTY = 0,
 };
 
 class Symbol

@@ -38,14 +38,14 @@ bool Game::gameInit()
 
 	// create symbols
 	std::map<symbolsEnum, Symbol> symbolsAvail = {
-	{ symbolsEnum::SEVEN,	   Symbol(symbolsEnum::SEVEN, "777") },
-	{ symbolsEnum::BAR,		   Symbol(symbolsEnum::BAR, "BAR") },
-	{ symbolsEnum::WATERMELON, Symbol(symbolsEnum::WATERMELON, "WWW") },
-	{ symbolsEnum::BELL,	   Symbol(symbolsEnum::BELL, "BEL") },
-	{ symbolsEnum::PEACH,	   Symbol(symbolsEnum::PEACH, "PEA") },
-	{ symbolsEnum::ORANGE,	   Symbol(symbolsEnum::ORANGE, "ORA") },
-	{ symbolsEnum::CHERRY,	   Symbol(symbolsEnum::CHERRY, "CHE") },
-	{ symbolsEnum::LEMON,	   Symbol(symbolsEnum::LEMON, "LEM") },
+	{ symbolsEnum::SEVEN,	   Symbol(symbolsEnum::SEVEN, "  777  ") },
+	{ symbolsEnum::BAR,		   Symbol(symbolsEnum::BAR, "  BAR  ") },
+	{ symbolsEnum::WATERMELON, Symbol(symbolsEnum::WATERMELON, "  WWW  ") },
+	{ symbolsEnum::BELL,	   Symbol(symbolsEnum::BELL, "  BEL  ") },
+	{ symbolsEnum::PEACH,	   Symbol(symbolsEnum::PEACH, "  PEA  ") },
+	{ symbolsEnum::ORANGE,	   Symbol(symbolsEnum::ORANGE, "  ORA  ") },
+	{ symbolsEnum::CHERRY,	   Symbol(symbolsEnum::CHERRY, "  CHE  ") },
+	{ symbolsEnum::LEMON,	   Symbol(symbolsEnum::LEMON, "  LEM  ") },
 	};
 
 	//create reels and shuffle symbols
@@ -100,29 +100,35 @@ bool Game::gameInit()
 
 	return true;
 }
-void Game::displayLine(int x, int y, std::vector<Symbol> vec, int color)
+void Game::displayLine(short int x, short int y, std::vector<Symbol> vec, int color)
 {
-	int stepX = 10;
-	int stepY = 6;
+	short int stepX = 10;
+	short int stepY = 6;
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 
 	for (int i = 0; i <= vec.size() - 3; ++i)
 	{
-		for (int k = 0; k < 3; ++k)
+		for (short int k = 0; k < 3; ++k)
 		{
-			COORD startXY = { x, y + k*stepY };
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (int)vec.at(i + k).getid());
+			COORD startXY = { x, y + k*stepY-1 };
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), startXY);
+			std::cout << "       \n";
+			startXY = { x, y + (k * stepY) };
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), startXY);
 			std::cout << vec.at(i+k);
+			startXY = { x, y + k * stepY + 1 };
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), startXY);
+			std::cout << "       \n";
 		}
-		Sleep(300);
+		Sleep(200);
 	}
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 }
 
 void Game::playTheGame()
 {
-
-	char charPick = 1;
+	char charPick = '1';
 	bool mainLoop = true;
 	while (mainLoop)
 	{	
@@ -144,7 +150,7 @@ void Game::playTheGame()
 		int i = 0;
 		for (auto vec : results)
 		{
-			this->displayLine(23 + (i++ * 10), 11, vec, 10);
+			this->displayLine(21 + (i++ * 10), 11, vec, 10);
 		}
 
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
@@ -157,16 +163,19 @@ void Game::playTheGame()
 		}
 		else
 		{
-			std::cout << " --------------- \n";
-
+			std::cout << "  --------------- \n";
+			//charPick = '1'; //autoplay
 		}
-
-		startXY = { 0, 40 };
+		
+		startXY = { 0, 0 };
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), startXY);
+		char tempCharPick = charPick;
 		do
 		{
 			charPick = _getch();
-		} while (charPick != 'e' && charPick != '1' && charPick != '2' && charPick != '3');
+		} while (charPick != 'e' && charPick != '1' && charPick != '2' && charPick != '3' && charPick != 13);
+
+		charPick = (charPick == 13) ? tempCharPick : charPick;
 
 		this->credits -= charPick - '0';
 		if (charPick == 'e' || this->credits < 1)
@@ -174,7 +183,6 @@ void Game::playTheGame()
 			mainLoop = false;
 		}
 	}
-
 }
 
 void Game::displaySlot()
