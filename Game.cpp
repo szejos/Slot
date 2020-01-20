@@ -152,12 +152,13 @@ void Game::playTheGame()
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), startXY);
 		if (win != winLines.end())
 		{
-			std::cout << " Won " << win->second * charPick - '1' << " credit \n";
-			this->credits += win->second * charPick - '0';
+			std::cout << " Won " << win->second * (charPick - '0') << " credit \n";
+			this->credits += win->second * (charPick - '0');
 		}
 		else
 		{
 			std::cout << " --------------- \n";
+			charPick = '1';
 		}
 
 		startXY = { 0, 40 };
@@ -168,7 +169,7 @@ void Game::playTheGame()
 		} while (charPick != 'e' && charPick != '1' && charPick != '2' && charPick != '3');
 
 		this->credits -= charPick - '0';
-		if (charPick == 'e')
+		if (charPick == 'e' || this->credits < 1)
 		{
 			mainLoop = false;
 		}
