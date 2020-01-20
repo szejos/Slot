@@ -158,7 +158,7 @@ void Game::playTheGame()
 		else
 		{
 			std::cout << " --------------- \n";
-			charPick = '1';
+
 		}
 
 		startXY = { 0, 40 };
